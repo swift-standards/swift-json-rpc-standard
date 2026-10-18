@@ -1,7 +1,6 @@
 public import RFC_8259
 
 extension JSON_RPC {
-    /// The identifier a client puts on a request and a server echoes on the response.
     public enum ID: Sendable, Hashable {
         case string(String)
         case number(RFC_8259.Number)
@@ -10,7 +9,6 @@ extension JSON_RPC {
 }
 
 extension JSON_RPC.ID {
-    /// The identifier a value holds; `nil` when the value is not a string, number or null.
     public init?(_ value: RFC_8259.Value) {
         switch value {
         case .string(let string): self = .string(string)
