@@ -3,10 +3,10 @@ public import RFC_8259
 extension JSON_RPC {
     public struct Request: Sendable, Hashable {
         public var method: String
-        public var params: RFC_8259.Value?
+        public var params: JSON_RPC.Parameters?
         public var id: JSON_RPC.ID?
 
-        public init(method: String, params: RFC_8259.Value? = nil, id: JSON_RPC.ID?) {
+        public init(method: String, params: JSON_RPC.Parameters? = nil, id: JSON_RPC.ID?) {
             self.method = method
             self.params = params
             self.id = id
@@ -20,9 +20,12 @@ extension JSON_RPC.Request {
             object["jsonrpc"]?.string == JSON_RPC.version,
             let method = object["method"]?.string
         else { throw JSON_RPC.Error(code: .invalidRequest, message: "Invalid Request") }
-        let params = object["params"]
-        if let params, params.array == nil, params.object == nil {
-            throw JSON_RPC.Error(code: .invalidRequest, message: "Invalid Request")
+        var params: JSON_RPC.Parameters?
+        if let member = object["params"] {
+            guard let parsed = JSON_RPC.Parameters(member) else {
+                throw JSON_RPC.Error(code: .invalidRequest, message: "Invalid Request")
+            }
+            params = parsed
         }
         var id: JSON_RPC.ID?
         if let member = object["id"] {
@@ -40,7 +43,7 @@ extension JSON_RPC.Request {
         var members: [(key: String, value: RFC_8259.Value)] = [
             ("jsonrpc", .string(JSON_RPC.version)), ("method", .string(method)),
         ]
-        if let params { members.append(("params", params)) }
+        if let params { members.append(("params", params.value)) }
         if let id { members.append(("id", id.value)) }
         return .object(RFC_8259.Object(members))
     }
