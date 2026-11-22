@@ -1,6 +1,6 @@
 # swift-json-rpc-standard
 
-Use this package when you need to read a JSON-RPC 2.0 request or build a JSON-RPC 2.0 response, working on parsed JSON as `RFC_8259.Value`. Start from `JSON_RPC.Request` on the server side and `JSON_RPC.Response` for the reply. Turning JSON text into a value and back is not part of this package, and neither are batches.
+Use this package when you need to read a JSON-RPC 2.0 request or build a JSON-RPC 2.0 response, working on parsed JSON as `IETF.RFC.`8259`.Value`. Start from `JSON_RPC.Request` on the server side and `JSON_RPC.Response` for the reply. Turning JSON text into a value and back is not part of this package, and neither are batches.
 
 ## Laws
 

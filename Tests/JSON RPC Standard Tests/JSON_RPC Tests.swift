@@ -11,8 +11,8 @@ struct `JSON_RPC Tests` {
             "jsonrpc": "2.0", "id": 1, "method": "subtract", "params": [42, 23],
         ])
         #expect(request.method == "subtract")
-        #expect(request.params == .byPosition(RFC_8259.Array([42, 23])))
-        #expect(request.id == .number(RFC_8259.Number(1)))
+        #expect(request.params == .byPosition(IETF.RFC.`8259`.Array([42, 23])))
+        #expect(request.id == .number(IETF.RFC.`8259`.Number(1)))
         #expect(!request.isNotification)
     }
 
@@ -25,14 +25,14 @@ struct `JSON_RPC Tests` {
     }
 
     @Test(arguments: [
-        RFC_8259.Value(arrayLiteral: 1, 2),
+        IETF.RFC.`8259`.Value(arrayLiteral: 1, 2),
         ["jsonrpc": "2.0", "id": 1],
         ["jsonrpc": "1.0", "id": 1, "method": "m"],
         ["jsonrpc": "2.0", "id": 1, "method": 1],
         ["jsonrpc": "2.0", "id": 1, "method": "m", "params": "bar"],
         ["jsonrpc": "2.0", "id": [1], "method": "m"],
     ])
-    func `malformed requests are invalid requests`(value: RFC_8259.Value) {
+    func `malformed requests are invalid requests`(value: IETF.RFC.`8259`.Value) {
         #expect(throws: JSON_RPC.Error(code: .invalidRequest, message: "Invalid Request")) {
             try JSON_RPC.Request(value)
         }
@@ -48,15 +48,15 @@ struct `JSON_RPC Tests` {
     func `a request with positional params round-trips through its value`() throws {
         let request = JSON_RPC.Request(
             method: "subtract",
-            params: .byPosition(RFC_8259.Array([42, 23])),
-            id: .number(RFC_8259.Number(1))
+            params: .byPosition(IETF.RFC.`8259`.Array([42, 23])),
+            id: .number(IETF.RFC.`8259`.Number(1))
         )
         #expect(request.value == ["jsonrpc": "2.0", "method": "subtract", "params": [42, 23], "id": 1])
         #expect(try JSON_RPC.Request(request.value) == request)
     }
 
-    @Test(arguments: [RFC_8259.Value.null, "bar", 1, true])
-    func `params that are neither an array nor an object are not parameters`(value: RFC_8259.Value) {
+    @Test(arguments: [IETF.RFC.`8259`.Value.null, "bar", 1, true])
+    func `params that are neither an array nor an object are not parameters`(value: IETF.RFC.`8259`.Value) {
         #expect(JSON_RPC.Parameters(value) == nil)
     }
 

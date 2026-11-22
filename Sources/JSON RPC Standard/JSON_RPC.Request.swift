@@ -15,7 +15,7 @@ extension JSON_RPC {
 }
 
 extension JSON_RPC.Request {
-    public init(_ value: RFC_8259.Value) throws(JSON_RPC.Error) {
+    public init(_ value: IETF.RFC.`8259`.Value) throws(JSON_RPC.Error) {
         guard let object = value.object,
             object["jsonrpc"]?.string == JSON_RPC.version,
             let method = object["method"]?.string
@@ -39,12 +39,12 @@ extension JSON_RPC.Request {
 
     public var isNotification: Bool { id == nil }
 
-    public var value: RFC_8259.Value {
-        var members: [(key: String, value: RFC_8259.Value)] = [
+    public var value: IETF.RFC.`8259`.Value {
+        var members: [(key: String, value: IETF.RFC.`8259`.Value)] = [
             ("jsonrpc", .string(JSON_RPC.version)), ("method", .string(method)),
         ]
         if let params { members.append(("params", params.value)) }
         if let id { members.append(("id", id.value)) }
-        return .object(RFC_8259.Object(members))
+        return .object(IETF.RFC.`8259`.Object(members))
     }
 }
